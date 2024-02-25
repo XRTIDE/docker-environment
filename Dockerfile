@@ -40,11 +40,11 @@ RUN git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git root/.oh
 
 # 修改.zshrc文件
 # 设置主题
-RUN sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster" /g' /root/.zshrc
+RUN sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' /root/.zshrc
 # 配置oh-my-zsh使用的插件
 RUN sed -i 's/plugins=(git)/plugins=( git extract zsh-autosuggestions zsh-syntax-highlighting)/g' /root/.zshrc
 
-# 启动zsh时加载的预设
+# 启动zsh时加载的预设(另一个文件)
 RUN cat > /root/.zshenv <<EOF
 
 # 别名
