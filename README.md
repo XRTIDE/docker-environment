@@ -6,7 +6,7 @@ docker buildx create --use --name=ビルダーインスタンス名前
 ```
 构建docker镜像
 ```shell
-docker buildx build --platform linux/arm64, linux/amd64 -t xrtide/xrtide . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t xrtide/xrtide . --push
 ```
 指定したビルダーインスタンスを現在の Docker コンテキストとして設定します。
 ```shell
