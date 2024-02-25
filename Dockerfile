@@ -2,8 +2,6 @@
 FROM arm64v8/ubuntu:latest
 
 
-
-
 # 更新
 RUN apt update && apt upgrade -y
 # 安装C++
