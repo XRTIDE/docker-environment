@@ -38,6 +38,12 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions root/.oh-my-zsh/c
 #zsh-syntax-highlighting 命令行语法高亮插件
 RUN git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
+# 修改.zshrc文件
+# 设置主题
+RUN sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster" /g' /root/.zshrc
+# 配置oh-my-zsh使用的插件
+RUN sed -i 's/plugins=(git)/plugins=( git extract zsh-autosuggestions zsh-syntax-highlighting)/g' /root/.zshrc
+
 # 启动zsh时加载的预设
 RUN cat > /root/.zshenv <<EOF
 
@@ -53,10 +59,6 @@ alias cg=cargo
 # 防止中文乱码
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-# oh-my-zsh的安装路径（zsh的配置路径）
-ZSH="/root/.oh-my-zsh"
-# 设置主题
-ZSH_THEME="agnoster" 
 
 # 启动错误命令自动更正
 ENABLE_CORRECTION="true"
@@ -64,16 +66,8 @@ ENABLE_CORRECTION="true"
 # 在命令执行的过程中，使用小红点进行提示
 COMPLETION_WAITING_DOTS="true"
 
-# 配置oh-my-zsh使用的插件
-plugins=(
-        git
-        extract
-        zsh-autosuggestions
-        zsh-syntax-highlighting
-)
-# 重启oh-my-zsh
-source \$ZSH/oh-my-zsh.sh
 EOF
+
 # 将.zshenv文件追加到.zshrc文件中
 RUN cat >> /root/.zshrc <<EOF
 source /root/.zshenv
@@ -92,6 +86,8 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 # 设置root登陆密码
 RUN echo 'root:0000' | chpasswd
+# 创建工作空间
+RUN mkdir /root/code
 
 # 启动ssh服务
 CMD ["/usr/sbin/sshd", "-D"]
