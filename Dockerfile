@@ -79,6 +79,10 @@ RUN chsh -s /bin/zsh
 RUN git clone https://github.com/keyding/Operator-Mono.git /usr/share/fonts/operatorMono
 RUN apt install -y fontconfig && fc-cache -f -v
 
+# 设置时区
+RUN apt install -y language-pack-en
+RUN update-locale
+
 # 允许root用户通过SSH登录
 RUN mkdir /run/sshd
 RUN apt install -y openssh-server
