@@ -14,9 +14,9 @@ RUN apt install -y python3
 RUN apt install -y python3-pip
 
 # 安装Jupyter环境
-RUN pip3 install -y jupyter
-RUN pip3 install -y ipykernel
-RUN python -m ipykernel install
+RUN pip3 install jupyter
+RUN pip3 install ipykernel
+RUN python3 -m ipykernel install
 
 # 安装curl
 RUN apt install -y curl
@@ -32,15 +32,24 @@ RUN evcxr_jupyter --install
 RUN apt install -y zsh
 RUN apt install -y git
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN chsh -s /bin/zsh
 # oh-my-zsh安装插件
 #zsh-autosuggestions 命令行命令键入时的历史命令建议
-RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 #zsh-syntax-highlighting 命令行语法高亮插件
-RUN git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+RUN git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # 启动zsh时加载的预设
 RUN cat > /root/.zshenv <<EOF
+
+# 别名
+# Python
+alias py=python3
+alias pp=pip3
+# Jupyter
+alias ju=jupyter
+# Rust
+alias cg=cargo
+
 # 防止中文乱码
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -62,19 +71,19 @@ plugins=(
         zsh-autosuggestions
         zsh-syntax-highlighting
 )
+# 重启oh-my-zsh
 source \$ZSH/oh-my-zsh.sh
-source \$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 EOF
 # 将.zshenv文件追加到.zshrc文件中
 RUN cat >> /root/.zshrc <<EOF
 source /root/.zshenv
 EOF
 
+# 更改默认shell为zsh
+RUN chsh -s /bin/zsh
 # 安装字体
-RUN git clone https://github.com/keyding/Operator-Mono.git /usr/share/fonts
-RUN fc-cache -f -v
-# 重启zsh
-RUN source /root/.zshrc
+RUN git clone https://github.com/keyding/Operator-Mono.git /usr/share/fonts/operatorMono
+RUN apt install -y fontconfig && fc-cache -f -v
 
 # 允许root用户通过SSH登录
 RUN apt install -y openssh-server
