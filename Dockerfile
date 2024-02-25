@@ -86,6 +86,7 @@ RUN git clone https://github.com/keyding/Operator-Mono.git /usr/share/fonts/oper
 RUN apt install -y fontconfig && fc-cache -f -v
 
 # 允许root用户通过SSH登录
+RUN mkdir /run/sshd
 RUN apt install -y openssh-server
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
