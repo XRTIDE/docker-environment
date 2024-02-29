@@ -10,7 +10,8 @@ docker buildx build --platform linux/arm64,linux/amd64 -t xrtide/xrtide . --push
 ```
 指定したビルダーインスタンスを現在の Docker コンテキストとして設定します。
 ```shell
-docker buildx use ビルダーインスタンス名前
+docker buildx create --name mybuilder
+docker buildx use mybuilder
 ```
 
 ## __启动容器的命令:__
@@ -32,7 +33,7 @@ docker run [OPTIONS] IMAGE [容器加载后执行的命令] [命令参数]
 * `-e username="ritchie"`: 设置环境变量；
 * `--env-file=[]`: 从指定文件读入环境变量；
 * `--cpuset="0-2" or --cpuset="0,1,2"`: 绑定容器到指定CPU运行；
-* `-m `:设置容器使用内存最大值；
+* `-m`:设置容器使用内存最大值；
 * `--net="bridge"`: 指定容器的网络连接类型，支持 bridge/host/none/container: 四种类型；
 * `--link=[]`: 添加链接到另一个容器；
 * `--volume , -v`: 绑定一个卷
