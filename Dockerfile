@@ -16,6 +16,7 @@ RUN apt install -y python3-pip
 # 安装Jupyter环境
 RUN pip3 install jupyter
 RUN pip3 install ipykernel
+# 添加Python内核
 RUN python3 -m ipykernel install --user --name=python3 --display-name py_default
 
 # 安装curl
@@ -23,7 +24,7 @@ RUN apt install -y curl
 # Rustをインストール
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Rust環境変数を設定
-ENV PATH=$HOME/.cargo/bin:$PATH
+ENV PATH="/root/.cargo/bin:$PATH"
 # jupyter安装rust内核
 RUN cargo install evcxr_jupyter
 RUN evcxr_jupyter --install
@@ -31,12 +32,22 @@ RUN evcxr_jupyter --install
 # 安装wget
 RUN apt install -y wget
 # 安装Dotnet
-RUN wget https://dot.net/v1/dotnet-install.sh | sh -s -- -y
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+RUN chmod +x ./dotnet-install.sh \
+    && ./dotnet-install.sh \
+    && ./dotnet-install.sh --runtime dotnet \
+    && ./dotnet-install.sh --runtime aspnetcore \
+    && rm ./dotnet-install.sh
 # Dotnet环境变量设置
-RUN export PATH=$HOME/.dotnet:$HOME/.dotnet/tools:$PATH
-# jupyter安装C#内核
+ENV PATH="/root/.dotnet:$PATH"
+# 安装Dotnet tools
 RUN dotnet tool install --global Microsoft.dotnet-interactive
-RUN dotnet interactive jupyter install
+# Dotnet tools环境变量设置
+ENV PATH="/root/.dotnet/tools:$PATH"
+# 安装C#内核
+# RUN dotnet interactive jupyter install    # 无法安装
+# 停止向微软发送数据
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 
 # Ubuntu安装oh-my-zsh
