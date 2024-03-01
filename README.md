@@ -2,7 +2,7 @@
 __内容包括:__
 - Jupyter
 - Python
-- Pyenv
+- pyenv & pyenv-virtualenv
 - Rust
 - C#
 - oh-my-zsh
