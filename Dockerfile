@@ -16,20 +16,29 @@ RUN apt install -y wget
 # 安装git
 RUN apt install -y git
 
-# 安装Python环境
-RUN apt install -y python3.11
-RUN apt install -y python3-pip
-
 # 安装Pyenv
 RUN curl https://pyenv.run | bash
 ENV PATH="/root/.pyenv/bin:$PATH"
 
-# 安装Jupyter环境
-RUN pip3 install --upgrade pip
-RUN pip3 install jupyter
-RUN pip3 install ipykernel
-# 添加Python内核
-RUN python3 -m ipykernel install --user --name py3.11_default --display-name "py3.11_default"
+# 安装默认Python环境
+RUN apt install -y build-essential zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev
+RUN pyenv install 3.12
+RUN pyenv rehash
+RUN pyenv global 3.12
+# 创建pyenv-virtualenv虚拟环境
+RUN pyenv virtualenv py3.12Env \
+    # 初始化Pyenv
+    && eval "$(pyenv init -)" \
+    # 初始化pyenv-virtualenv虚拟环境插件
+    && eval "$(pyenv virtualenv-init -)" \
+    # 激活pyenv-virtualenv虚拟环境
+    && pyenv activate py3.12Env \
+    # 安装Jupyter环境
+    && pip3 install jupyter \
+    && pip3 install ipykernel \
+    # 添加py3.12Env内核
+    && python3 -m ipykernel install --user --name py3.12Env
+
 
 # 安装Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -96,6 +105,11 @@ ENABLE_CORRECTION="true"
 
 # 在命令执行的过程中，使用小红点进行提示
 COMPLETION_WAITING_DOTS="true"
+
+# 初始化Pyenv
+eval "\$(pyenv init -)"
+# 初始化pyenv-virtualenv虚拟环境插件
+eval "\$(pyenv virtualenv-init -)"
 
 EOF
 
