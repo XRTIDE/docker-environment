@@ -1,5 +1,10 @@
 ## __构建多架构映像:__
-
+__内容包括:__
+- Jupyter
+- Python
+- Pyenv
+- Rust
+- C#
 新しいビルダーインスタンスを作成し、そのインスタンスを現在の Docker コンテキストとして設定します。
 ```shell
 docker buildx create --use --name=ビルダーインスタンス名前
