@@ -17,16 +17,19 @@ RUN apt install -y wget
 RUN apt install -y git
 
 # 安装Python环境
-RUN curl https://pyenv.run | bash
 RUN apt install -y python3.11
 RUN apt install -y python3-pip
+
+# 安装Pyenv
+RUN curl https://pyenv.run | bash
+ENV PATH="/root/.pyenv/bin:$PATH"
 
 # 安装Jupyter环境
 RUN pip3 install --upgrade pip
 RUN pip3 install jupyter
 RUN pip3 install ipykernel
 # 添加Python内核
-RUN python3 -m ipykernel install --user --name py3.11_default
+RUN python3 -m ipykernel install --user --name py3.11_default --display-name "py3.11_default"
 
 # 安装Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -93,11 +96,6 @@ ENABLE_CORRECTION="true"
 
 # 在命令执行的过程中，使用小红点进行提示
 COMPLETION_WAITING_DOTS="true"
-
-# pyenv环境配置
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 EOF
 
