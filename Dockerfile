@@ -17,10 +17,11 @@ RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
     && adduser chxi sudo \
     && echo 'chxi:0000' | chpasswd
-RUN sudo chown -R chxi:chxi /home/chxi
 # 以下命令切换到chxi用户执行
 USER chxi:chxi
 WORKDIR /home/chxi
+# 更改/home/chxi所属权为chxi
+RUN sudo chown -R chxi:chxi /home/chxi
 
 # 安装C++环境
 RUN sudo apt install -y build-essential
