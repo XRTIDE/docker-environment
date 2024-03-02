@@ -158,8 +158,5 @@ RUN sudo update-locale
 # 创建工作空间
 RUN sudo mkdir /home/chxi/code
 
-# 重新读区.zshrc
-RUN sudo source /home/chxi/.zshrc
-
 # 启动ssh服务
 CMD ["/usr/sbin/sshd", "-D"]
