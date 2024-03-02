@@ -10,8 +10,13 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 # 设置root登陆密码
 RUN echo 'root:0000' | chpasswd
 
+# 安装zsh
+RUN apt install -y zsh
+# 更改默认shell为zsh
+RUN chsh -s /bin/zsh
+
 # 新建非root用户
-RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
+RUN useradd --create-home --no-log-init --shell /bin/zsh chxi \
     && adduser chxi sudo \
     && echo 'chxi:0000' | chpasswd
 # 安装sudo
@@ -40,7 +45,7 @@ RUN sudo apt install -y git
 # 安装Pyenv依赖
 RUN sudo apt install -y build-essential zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev
 # 安装Pyenv
-RUN sudo curl https://pyenv.run | bash
+RUN sudo curl https://pyenv.run | zsh
 ENV PATH="/home/chxi/.pyenv/bin:$PATH"
 
 # 初始化Pyenv
@@ -60,7 +65,7 @@ RUN eval "$(pyenv init -)" \
     && pyenv local --unset
 
 # 安装Rust
-RUN sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y
 # Rust環境変数を設定
 ENV PATH="/home/chxi/.cargo/bin:$PATH"
 # jupyter安装rust内核
@@ -88,8 +93,7 @@ RUN sudo chmod +x ./dotnet-install.sh \
 
 
 # Ubuntu安装oh-my-zsh
-RUN sudo apt install -y zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # oh-my-zsh安装插件
 #zsh-autosuggestions 命令行命令键入时的历史命令建议
 RUN sudo git clone https://github.com/zsh-users/zsh-autosuggestions /home/chxi/.oh-my-zsh/custom/plugins/zsh-autosuggestions
@@ -143,8 +147,6 @@ RUN cat >> /home/chxi/.zshrc <<EOF
 source /home/chxi/.zshenv
 EOF
 
-# 更改默认shell为zsh
-RUN sudo chsh -s /bin/zsh
 # 安装字体
 RUN sudo git clone https://github.com/keyding/Operator-Mono.git /usr/share/fonts/operatorMono
 RUN sudo apt install -y fontconfig && fc-cache -f -v
@@ -155,6 +157,9 @@ RUN sudo update-locale
 
 # 创建工作空间
 RUN sudo mkdir /home/chxi/code
+
+# 重新读区.zshrc
+RUN sudo source ./.zshrc
 
 # 启动ssh服务
 CMD ["/usr/sbin/sshd", "-D"]
