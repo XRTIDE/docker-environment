@@ -72,9 +72,9 @@ RUN sudo chmod +x ./dotnet-install.sh \
     # 删除dotnet-install.sh
     && sudo rm ./dotnet-install.sh \
     # 安装Dotnet tools
-    && dotnet tool install --global Microsoft.dotnet-interactive \
-    # 安装Jupyter内核
-    && dotnet interactive jupyter install
+    && dotnet tool install --global Microsoft.dotnet-interactive
+# 安装Jupyter内核
+# && dotnet interactive jupyter install # 无法安装
 
 
 # Ubuntu安装oh-my-zsh
