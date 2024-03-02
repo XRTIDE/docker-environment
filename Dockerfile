@@ -11,15 +11,16 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 # 设置root登陆密码
 RUN echo 'root:0000' | chpasswd
 
-# 设置sudo免密
-RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 # 新建非root用户
 RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
     && adduser chxi sudo \
     && echo 'chxi:0000' | chpasswd
+# 设置sudo免密
+RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# 设置当前目录为/home/chxi
+WORKDIR /home/chxi
 # 以下命令切换到chxi用户执行
 USER chxi:chxi
-WORKDIR /home/chxi
 # 更改/home/chxi所属权为chxi
 RUN sudo chown -R chxi:chxi /home/chxi
 
