@@ -45,7 +45,7 @@ RUN sudo apt install -y git
 # 安装Pyenv依赖
 RUN sudo apt install -y build-essential zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev
 # 安装Pyenv
-RUN sudo curl https://pyenv.run | zsh
+RUN sudo curl https://pyenv.run | sh
 ENV PATH="/home/chxi/.pyenv/bin:$PATH"
 
 # 初始化Pyenv
@@ -65,7 +65,7 @@ RUN eval "$(pyenv init -)" \
     && pyenv local --unset
 
 # 安装Rust
-RUN sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y
+RUN sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Rust環境変数を設定
 ENV PATH="/home/chxi/.cargo/bin:$PATH"
 # jupyter安装rust内核
@@ -93,7 +93,7 @@ RUN sudo chmod +x ./dotnet-install.sh \
 
 
 # Ubuntu安装oh-my-zsh
-RUN zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # oh-my-zsh安装插件
 #zsh-autosuggestions 命令行命令键入时的历史命令建议
 RUN sudo git clone https://github.com/zsh-users/zsh-autosuggestions /home/chxi/.oh-my-zsh/custom/plugins/zsh-autosuggestions
