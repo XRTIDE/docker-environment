@@ -20,6 +20,11 @@ docker buildx build --platform linux/arm64,linux/amd64 -t xrtide/xrtide . --push
 docker buildx create --name mybuilder
 docker buildx use mybuilder
 ```
+作成されたビルダーインスタンスの一覧を表示して削除する。
+```shell
+docker buildx ls
+docker buildx rm mybuilder
+```
 
 ## __启动容器的命令:__
 ```shell
