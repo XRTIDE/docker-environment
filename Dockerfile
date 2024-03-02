@@ -4,9 +4,15 @@ FROM arm64v8/ubuntu:latest
 # 更新apt源
 RUN apt update && apt upgrade -y
 RUN apt install -y sudo
+# 允许root用户通过SSH登录
+RUN mkdir /run/sshd
+RUN apt install -y openssh-server
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+# 设置root登陆密码
+RUN echo 'root:0000' | chpasswd
+
 # 设置sudo免密
 RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
 # 新建非root用户
 RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
     && adduser chxi sudo \
@@ -143,13 +149,6 @@ RUN sudo apt install -y fontconfig && fc-cache -f -v
 RUN sudo apt install -y language-pack-en
 RUN sudo update-locale
 
-# 允许root用户通过SSH登录
-RUN sudo mkdir /run/sshd
-RUN sudo apt install -y openssh-server
-RUN sudo echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-
-# 设置root登陆密码
-RUN sudo echo 'root:0000' | chpasswd
 # 创建工作空间
 RUN sudo mkdir /home/chxi/code
 
