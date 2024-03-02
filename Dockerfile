@@ -3,7 +3,6 @@ FROM arm64v8/ubuntu:latest
 
 # 更新apt源
 RUN apt update && apt upgrade -y
-RUN apt install -y sudo
 # 允许root用户通过SSH登录
 RUN mkdir /run/sshd
 RUN apt install -y openssh-server
@@ -15,6 +14,8 @@ RUN echo 'root:0000' | chpasswd
 RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
     && adduser chxi sudo \
     && echo 'chxi:0000' | chpasswd
+# 安装sudo
+RUN apt install -y sudo
 # 设置sudo免密
 RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 # 设置当前目录为/home/chxi
