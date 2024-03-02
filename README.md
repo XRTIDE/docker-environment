@@ -2,7 +2,7 @@
 __内容包括:__
 - Jupyter
 - Python
-- pyenv & pyenv-virtualenv
+- Pyenv
 - Rust
 - C#
 - oh-my-zsh
@@ -51,6 +51,6 @@ docker run [OPTIONS] IMAGE [容器加载后执行的命令] [命令参数]
 docker run -p 80:80 -v $(pwd):/code --name="xrtide-container-01" -it xrtide/xrtide:1.0 /bin/bash
 ```
 ```shell
-docker run -p 80:80 -v $HOME/Desktop/code/:/root/code --name="xrtide-container-01" -d xrtide/xrtide
+docker run -w /home/chxi -p 80:80 -v $HOME/Desktop/code/:/home/chxi/code --name="xrtide-container-01" -d xrtide/xrtide
 ```
 
