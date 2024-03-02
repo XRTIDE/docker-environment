@@ -87,6 +87,7 @@ RUN cat > /root/.zshenv <<EOF
 
 # 别名
 # Python
+alias pe=pyenv
 alias py=python3
 alias pp=pip3
 # Jupyter
