@@ -17,6 +17,7 @@ RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN useradd --create-home --no-log-init --shell /bin/bash chxi \
     && adduser chxi sudo \
     && echo 'chxi:0000' | chpasswd
+RUN sudo chmod 755 /home/chxi
 # 以下命令切换到chxi用户执行
 USER chxi:chxi
 WORKDIR /home/chxi
@@ -88,9 +89,9 @@ RUN sudo apt install -y zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # oh-my-zsh安装插件
 #zsh-autosuggestions 命令行命令键入时的历史命令建议
-RUN sudo git clone https://github.com/zsh-users/zsh-autosuggestions root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+RUN sudo git clone https://github.com/zsh-users/zsh-autosuggestions /home/chxi/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 #zsh-syntax-highlighting 命令行语法高亮插件
-RUN sudo git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+RUN sudo git clone https://gitee.com/Annihilater/zsh-syntax-highlighting.git /home/chxi/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # 修改.zshrc文件
 # 设置主题
