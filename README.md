@@ -55,7 +55,7 @@ docker run [OPTIONS] IMAGE [容器加载后执行的命令] [命令参数]
 ```shell
 docker run -p 80:80 -v $(pwd):/code --name="xrtide-container-01" -it xrtide/xrtide:1.0 /bin/bash
 ```
+docker容器运行必须有一个前台进程， 如果没有前台进程执行，容器认为空闲，就会自行退出。所以使用`-dit`参数
 ```shell
-docker run -w /home/chxi -p 80:80 -v $HOME/Desktop/code/:/home/chxi/code --name="xrtide-container-01" -d xrtide/xrtide
+docker run -w /home/chxi -p 80:80 -v $HOME/Desktop/code/:/home/chxi/code --name="xrtide-container" -dit xrtide/xrtide /bin/zsh
 ```
-
