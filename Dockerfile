@@ -27,8 +27,6 @@ RUN echo "chxi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 WORKDIR /home/chxi
 # 以下命令切换到chxi用户执行
 USER chxi:chxi
-# 更改/home/chxi所属权为chxi
-RUN sudo chown -R chxi:chxi /home/chxi
 
 # 安装C++环境
 RUN sudo apt install -y build-essential
