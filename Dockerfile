@@ -28,6 +28,7 @@ WORKDIR /home/chxi
 # 以下命令切换到chxi用户执行
 USER chxi:chxi
 
+
 # 安装C++环境
 RUN sudo apt install -y build-essential
 RUN sudo apt install -y cmake
